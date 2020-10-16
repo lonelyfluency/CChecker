@@ -15,7 +15,9 @@ class Board:
                 self.bd_pos_status[(i,j)] = 0
                 self.bd_piece_status[(i,j)] = Dummy((i,j))
 
-    
+    def add_piece(self,piece):
+        self.bd_pos_status[piece.pos] = 1 if piece.side ==0 else -1
+        self.bd_piece_status[piece.pos] = piece 
 
     def draw(self):
         ax = plt.gca()
@@ -32,3 +34,15 @@ class Board:
 if __name__ == "__main__":
     cboard = Board()
     cboard.draw()
+    ju = Ju(0,(0,0))
+    bing = Bing(0,(3,0))
+    pao = Pao(1,(8,0))
+    cboard.add_piece(ju)
+    cboard.add_piece(bing)
+    cboard.add_piece(pao)
+    ju.get_act_list(cboard.bd_pos_status)
+    print(ju.act_list)
+    bing.get_act_list(cboard.bd_pos_status)
+    print(bing.act_list)
+    pao.get_act_list(cboard.bd_pos_status)
+    print(pao.act_list)
