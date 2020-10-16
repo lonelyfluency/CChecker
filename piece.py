@@ -177,6 +177,7 @@ class Pao(Piece):
         self.side = side
         self.pos = pos
         self.name = 'pao'
+        self.value = 5
 
     def get_act_list(self,board_status):
         up = self.pos[0]+1
@@ -265,9 +266,59 @@ class Ma(Piece):
         self.side = side
         self.pos = pos
         self.name = 'ma'
+        self.value = 5
 
     def get_act_list(self,board_status):
-        pass
+        tar_indicator_list = []
+        try:
+            if board_status[(self.pos[0],self.pos[1]+1)] == 0 and self.pos[1]<7:
+                tar_indicator_list.append(1)
+                tar_indicator_list.append(8)
+        except KeyError:
+            pass
+        try:
+            if board_status[(self.pos[0]+1,self.pos[1])] == 0 and self.pos[0]<8:
+                tar_indicator_list.append(2)
+                tar_indicator_list.append(3)
+        except KeyError:
+            pass
+        try:
+            if board_status[(self.pos[0],self.pos[1]-1)] == 0 and self.pos[1]>1:
+                tar_indicator_list.append(4)
+                tar_indicator_list.append(5)
+        except KeyError:
+            pass
+        try:
+            if board_status[(self.pos[0]-1,self.pos[1])] == 0 and self.pos[0]>1:
+                tar_indicator_list.append(6)
+                tar_indicator_list.append(7)
+        except KeyError:
+            pass
+
+        for i in tar_indicator_list:
+            if i == 1:
+                tmp_pos = (self.pos[0]+1,self.pos[1]+2)
+            elif i == 2:
+                tmp_pos = (self.pos[0]+2,self.pos[1]+1)
+            elif i == 3:
+                tmp_pos = (self.pos[0]+2,self.pos[1]-1)
+            elif i == 4:
+                tmp_pos = (self.pos[0]+1,self.pos[1]-2)
+            elif i == 5:
+                tmp_pos = (self.pos[0]-1,self.pos[1]-2)
+            elif i == 6:
+                tmp_pos = (self.pos[0]-2,self.pos[1]-1)
+            elif i == 7:
+                tmp_pos = (self.pos[0]-2,self.pos[1]+1)
+            else:
+                tmp_pos = (self.pos[0]-1,self.pos[1]+2)
+            try:
+                if self.side == 0 and board_status[tmp_pos] != 1:
+                    self.act_list.append(tmp_pos)
+                if self.side == 1 and board_status[tmp_pos] != -1:
+                    self.act_list.append(tmp_pos)
+            except KeyError:
+                pass
 
 
 class Xiang(Piece):
@@ -276,9 +327,47 @@ class Xiang(Piece):
         self.side = side
         self.pos = pos
         self.name = 'xiang'
+        self.value = 3
 
     def get_act_list(self,board_status):
-        pass
+        tar_indicator_list = []
+        try:
+            if board_status[(self.pos[0]+1,self.pos[1]+1)] == 0 and self.pos[1]<7 and self.pos[0]<8:
+                tar_indicator_list.append(1)
+        except KeyError:
+            pass
+        try:
+            if board_status[(self.pos[0]+1,self.pos[1]-1)] == 0 and self.pos[0]<8 and self.pos[1]>1:
+                tar_indicator_list.append(2)
+        except KeyError:
+            pass
+        try:
+            if board_status[(self.pos[0]-1,self.pos[1]-1)] == 0 and self.pos[1]>1 and self.pos[0]>1:
+                tar_indicator_list.append(3)
+        except KeyError:
+            pass
+        try:
+            if board_status[(self.pos[0]-1,self.pos[1]+1)] == 0 and self.pos[0]>1 and self.pos[1]<7:
+                tar_indicator_list.append(4)
+        except KeyError:
+            pass
+
+        for i in tar_indicator_list:
+            if i == 1:
+                tmp_pos = (self.pos[0]+2,self.pos[1]+2)
+            elif i == 2:
+                tmp_pos = (self.pos[0]+2,self.pos[1]-2)
+            elif i == 3:
+                tmp_pos = (self.pos[0]-2,self.pos[1]-2)
+            else:
+                tmp_pos = (self.pos[0]-2,self.pos[1]+2)
+            try:
+                if self.side == 0 and board_status[tmp_pos] != 1:
+                    self.act_list.append(tmp_pos)
+                if self.side == 1 and board_status[tmp_pos] != -1:
+                    self.act_list.append(tmp_pos)
+            except KeyError:
+                pass
 
 
 class Shi(Piece):
@@ -287,9 +376,41 @@ class Shi(Piece):
         self.side = side
         self.pos = pos
         self.name = 'shi'
+        self.value = 3
 
     def get_act_list(self,board_status):
-        pass
+        if self.side == 0:
+            posible_pos = [(0,3),(0,5),(1,4),(2,3),(2,5)]
+            assert self.pos in posible_pos
+
+            if self.pos == (0,3) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (0,5) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (2,3) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (2,5) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (1,4):
+                for i in [(0,3),(0,5),(2,3),(2,5)]:
+                    if board_status[i] != 1:
+                        self.act_list.append(i)
+        else:
+            posible_pos = [(9,3),(9,5),(8,4),(7,3),(7,5)]
+            assert self.pos in posible_pos
+
+            if self.pos == (9,3) and board_status[(8,4)] != 1:
+                self.act_list.append((8,4))
+            if self.pos == (9,5) and board_status[(8,4)] != 1:
+                self.act_list.append((8,4))
+            if self.pos == (7,3) and board_status[(8,4)] != 1:
+                self.act_list.append((8,4))
+            if self.pos == (7,5) and board_status[(8,4)] != 1:
+                self.act_list.append((8,4))
+            if self.pos == (8,4):
+                for i in [(9,3),(9,5),(7,3),(7,5)]:
+                    if board_status[i] != 1:
+                        self.act_list.append(i)
 
 
 class King(Piece):
@@ -300,4 +421,8 @@ class King(Piece):
         self.name = 'king'
 
     def get_act_list(self,board_status):
-        pass
+        tar_indicator_list = []
+        if self.side == 0:
+            pass
+        else:
+            pass
