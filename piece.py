@@ -28,7 +28,7 @@ class Bing(Piece):
 
     def get_act_list(self,board_status):
         '''
-        board_status is a dic that store the pos info of the board, the same as Board.bd_bd_pos_status
+        board_status is a dic that store the pos info of the board, the same as Board.bd_pos_status
         '''
         if self.side == 0:
             if self.pos[0] < 5:
@@ -399,13 +399,13 @@ class Shi(Piece):
             posible_pos = [(9,3),(9,5),(8,4),(7,3),(7,5)]
             assert self.pos in posible_pos
 
-            if self.pos == (9,3) and board_status[(8,4)] != 1:
+            if self.pos == (9,3) and board_status[(8,4)] != -1:
                 self.act_list.append((8,4))
-            if self.pos == (9,5) and board_status[(8,4)] != 1:
+            if self.pos == (9,5) and board_status[(8,4)] != -1:
                 self.act_list.append((8,4))
-            if self.pos == (7,3) and board_status[(8,4)] != 1:
+            if self.pos == (7,3) and board_status[(8,4)] != -1:
                 self.act_list.append((8,4))
-            if self.pos == (7,5) and board_status[(8,4)] != 1:
+            if self.pos == (7,5) and board_status[(8,4)] != -1:
                 self.act_list.append((8,4))
             if self.pos == (8,4):
                 for i in [(9,3),(9,5),(7,3),(7,5)]:
@@ -419,10 +419,130 @@ class King(Piece):
         self.side = side
         self.pos = pos
         self.name = 'king'
+        self.value = 100
 
-    def get_act_list(self,board_status):
+    def get_act_list(self,board_status,piece_status):
         tar_indicator_list = []
         if self.side == 0:
-            pass
+            posible_pos = [(0,3),(0,4),(0,5),(1,3),(1,4),(1,5),(2,3),(2,4),(2,5)]
+            assert self.pos in posible_pos
+
+            if self.pos == (0,3) and board_status[(0,4)] != 1:
+                self.act_list.append((0,4))
+            if self.pos == (0,3) and board_status[(1,3)] != 1:
+                self.act_list.append((1,3))
+            if self.pos == (0,4) and board_status[(0,3)] != 1:
+                self.act_list.append((0,3))
+            if self.pos == (0,4) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (0,4) and board_status[(0,5)] != 1:
+                self.act_list.append((0,5))
+            if self.pos == (0,5) and board_status[(0,4)] != 1:
+                self.act_list.append((0,4))
+            if self.pos == (0,5) and board_status[(1,5)] != 1:
+                self.act_list.append((1,5))
+            
+            if self.pos == (2,3) and board_status[(2,4)] != 1:
+                self.act_list.append((2,4))
+            if self.pos == (2,3) and board_status[(1,3)] != 1:
+                self.act_list.append((1,3))
+            if self.pos == (2,4) and board_status[(2,3)] != 1:
+                self.act_list.append((2,3))
+            if self.pos == (2,4) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (2,4) and board_status[(2,5)] != 1:
+                self.act_list.append((2,5))
+            if self.pos == (2,5) and board_status[(2,4)] != 1:
+                self.act_list.append((2,4))
+            if self.pos == (2,5) and board_status[(1,5)] != 1:
+                self.act_list.append((1,5))
+
+            if self.pos == (1,3) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+            if self.pos == (1,3) and board_status[(2,3)] != 1:
+                self.act_list.append((2,3))
+            if self.pos == (1,3) and board_status[(0,3)] != 1:
+                self.act_list.append((0,3))
+            if self.pos == (1,4) and board_status[(1,3)] != 1:
+                self.act_list.append((1,3))
+            if self.pos == (1,4) and board_status[(1,5)] != 1:
+                self.act_list.append((1,5))
+            if self.pos == (1,4) and board_status[(0,4)] != 1:
+                self.act_list.append((0,4))
+            if self.pos == (1,4) and board_status[(2,4)] != 1:
+                self.act_list.append((2,4))
+            if self.pos == (1,5) and board_status[(0,5)] != 1:
+                self.act_list.append((0,5))
+            if self.pos == (1,5) and board_status[(2,5)] != 1:
+                self.act_list.append((2,5))
+            if self.pos == (1,5) and board_status[(1,4)] != 1:
+                self.act_list.append((1,4))
+
+            col = self.pos[1]
+            for row in range(self.pos[0]+1,10):
+                if board_status[(row,col)] != 0:
+                    if piece_status[(row,col)].name == 'king':
+                        self.act_list.append((row,col))
+                    break
+
         else:
-            pass
+            posible_pos = [(9,3),(9,4),(9,5),(8,3),(8,4),(8,5),(7,3),(7,4),(7,5)]
+            assert self.pos in posible_pos
+
+            if self.pos == (9,3) and board_status[(9,4)] != -1:
+                self.act_list.append((9,4))
+            if self.pos == (9,3) and board_status[(8,3)] != -1:
+                self.act_list.append((8,3))
+            if self.pos == (9,4) and board_status[(9,3)] != -1:
+                self.act_list.append((9,3))
+            if self.pos == (9,4) and board_status[(8,4)] != -1:
+                self.act_list.append((8,4))
+            if self.pos == (9,4) and board_status[(9,5)] != -1:
+                self.act_list.append((9,5))
+            if self.pos == (9,5) and board_status[(9,4)] != -1:
+                self.act_list.append((9,4))
+            if self.pos == (9,5) and board_status[(8,5)] != -1:
+                self.act_list.append((8,5))
+            
+            if self.pos == (7,3) and board_status[(7,4)] != -1:
+                self.act_list.append((2,4))
+            if self.pos == (7,3) and board_status[(8,3)] != -1:
+                self.act_list.append((8,3))
+            if self.pos == (7,4) and board_status[(7,3)] != -1:
+                self.act_list.append((7,3))
+            if self.pos == (7,4) and board_status[(7,4)] != -1:
+                self.act_list.append((8,4))
+            if self.pos == (7,4) and board_status[(7,5)] != -1:
+                self.act_list.append((7,5))
+            if self.pos == (7,5) and board_status[(7,4)] != -1:
+                self.act_list.append((7,4))
+            if self.pos == (7,5) and board_status[(8,5)] != -1:
+                self.act_list.append((8,5))
+
+            if self.pos == (8,3) and board_status[(8,4)] != -1:
+                self.act_list.append((8,4))
+            if self.pos == (8,3) and board_status[(7,3)] != -1:
+                self.act_list.append((7,3))
+            if self.pos == (8,3) and board_status[(9,3)] != -1:
+                self.act_list.append((9,3))
+            if self.pos == (8,4) and board_status[(8,3)] != -1:
+                self.act_list.append((8,3))
+            if self.pos == (8,4) and board_status[(8,5)] != -1:
+                self.act_list.append((8,5))
+            if self.pos == (8,4) and board_status[(9,4)] != -1:
+                self.act_list.append((9,4))
+            if self.pos == (8,4) and board_status[(7,4)] != -1:
+                self.act_list.append((7,4))
+            if self.pos == (8,5) and board_status[(9,5)] != -1:
+                self.act_list.append((9,5))
+            if self.pos == (8,5) and board_status[(7,5)] != -1:
+                self.act_list.append((7,5))
+            if self.pos == (8,5) and board_status[(8,4)] != -1:
+                self.act_list.append((8,4))
+
+            col = self.pos[1]
+            for row in range(self.pos[0]-1,-1,-1):
+                if board_status[(row,col)] != 0:
+                    if piece_status[(row,col)].name == 'king':
+                        self.act_list.append((row,col))
+                    break
